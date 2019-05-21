@@ -6,6 +6,14 @@ let keydownHandler = event => { // 2
     if (event.code === "ArrowRight") { // 4
         gameEngine.player.moveRight() // 4
     } // 4
+
+    if (event.code === "ArrowUp") { 
+        gameEngine.player.moveUp() 
+    } 
+    if (event.code === "ArrowDown") { 
+        gameEngine.player.moveDown() 
+    }
+
 } // 2
 document.addEventListener("keydown", keydownHandler) // 5
 gameEngine.gameLoop() // 6

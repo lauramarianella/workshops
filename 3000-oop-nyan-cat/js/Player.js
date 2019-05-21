@@ -2,6 +2,7 @@ class Player { // 1
     constructor(root) { // 2
         this.x = 2 * PLAYER_WIDTH // 3
         let y = GAME_HEIGHT - PLAYER_HEIGHT - 10 // 4
+        this.y = y
         this.domElement = document.createElement("img") // 5
         this.domElement.src = "images/player.png" // 6
         this.domElement.style.position = "absolute" // 6
@@ -22,6 +23,21 @@ class Player { // 1
         } // 11
         this.domElement.style.left = this.x + "px" // 11
     } // 11
+
+
+    moveUp() {
+        if ((this.y - PLAYER_HEIGHT)>=0)  { 
+            this.y = this.y - PLAYER_HEIGHT
+        } 
+        this.domElement.style.top = this.y + "px" 
+    } 
+    moveDown() {
+        if ((this.y + PLAYER_HEIGHT)<= GAME_HEIGHT - PLAYER_HEIGHT - 10){ 
+            this.y = this.y + PLAYER_HEIGHT
+        } 
+        this.domElement.style.top = this.y + "px" 
+    } 
+
 } // 1
 
 /* meta

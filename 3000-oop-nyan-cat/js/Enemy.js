@@ -7,6 +7,9 @@ class Enemy { // 1
                         this.destroyed = true // 11
                 } // 11
         } // 9
+        speedUp(){
+                this.speed = this.speed + 0.05
+        }
         constructor(theRoot, enemySpot) { // 2
                 this.root = theRoot // 3
                 this.spot = enemySpot // 3

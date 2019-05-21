@@ -3,30 +3,77 @@ class Engine { // 1
     if (this.lastFrame === undefined) this.lastFrame = (new Date).getTime() // 8
     let timeDiff = (new Date).getTime() - this.lastFrame // 8
     this.lastFrame = (new Date).getTime() // 8
+
+    this.enemies.forEach(enemy => { // 9
+      //enemy.speedUp() // 9
+    }) // 9
+
     this.enemies.forEach(enemy => { // 9
       enemy.update(timeDiff) // 9
     }) // 9
     this.enemies = this.enemies.filter(enemy => { // 10
       return !enemy.destroyed // 10
     }) // 10
+
     while (this.enemies.length < MAX_ENEMIES) { // 11
       let spot = nextEnemySpot(this.enemies) // 12
       this.enemies.push(new Enemy(this.root, spot)) // 12
     } // 11
+
+    this.playerDead = this.enemies.some(enemy => {
+      if(   ( 
+                ( (this.player.x + PLAYER_WIDTH) > enemy.x          &&   (this.player.x + PLAYER_WIDTH)  <= (enemy.x + ENEMY_WIDTH) )
+                ||  ( (enemy.x + ENEMY_WIDTH)    > this.player.x    &&   (enemy.x + ENEMY_WIDTH)         <= (this.player.x + PLAYER_WIDTH) ) 
+            )
+         && (
+                ( (this.player.y + PLAYER_HEIGHT) > enemy.y         &&   (this.player.y + PLAYER_HEIGHT) <= (enemy.y + ENEMY_HEIGHT)) 
+                || ( (enemy.y + ENEMY_HEIGHT)     > this.player.y   &&   (enemy.y + ENEMY_HEIGHT)        <= (this.player.y + PLAYER_HEIGHT)) 
+            )         
+        ){
+        return true;
+      }
+    }) 
+
+    setTimeout(this.updateScore, this.timeIntervalScore);
     if (this.isPlayerDead()) { // 13
-      window.alert("Game over") // 13
+      //window.alert("Game over") // 13
+      this.text.update("Game over")
       return // 13
     } // 13
-    setTimeout(this.gameLoop, 20) // 14
+
+    setTimeout(this.setRandomNumEnemies(1,5), 10000) //Question 3 Increase the maximum number of enemies every 10 seconds (to a maximum of 5)
+    setTimeout(this.gameLoop, this.timeIntervalLoop) // 14
   } // 7
+  setRandomNumEnemies = (min, max) => {
+    MAX_ENEMIES = Math.floor((Math.random() * max - min +1 ) + min);
+  }
+
+  updateScore = () =>{
+    /*Question 4(slide 79)
+    Add text at the top right to show what your score is. Use the Text class provided in Text.js . 
+    The score should increase as the game progresses.*/
+    if(!this.playerDead){
+      this.score ++
+      this.text.update("" + this.score)
+    }
+  }
+
   isPlayerDead = () => { // 15
-    return false // 15
+    //return false // 15
+    return this.playerDead
   } // 15
   constructor(theRoot) { // 2
     this.root = theRoot // 3
     this.player = new Player(this.root) // 4
     this.enemies = [] // 5
     addBackground(this.root) // 6
+
+    this.score = 0
+    this.text = new Text(this.root,10,10) //(root, xPos, yPos)
+    this.timeIntervalLoop = 1000
+    this.timeIntervalScore = 2000
+
+    this.playerDead = false
   } // 2
 } // 1
 
